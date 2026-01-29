@@ -1,9 +1,9 @@
 package com.f1.info.features.drivers.data.remote
 
-import com.f1.info.features.drivers.data.remote.dto.DriversResponse
+import com.f1.info.features.drivers.data.remote.dto.DriverDto
 import retrofit2.http.GET
 
 interface DriversApiService {
-    @GET("api/current/drivers")
-    suspend fun getDrivers(): DriversResponse
+    @GET("v1/drivers?session_key=9839")
+    suspend fun getDrivers(): List<DriverDto>
 }

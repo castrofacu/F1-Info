@@ -12,7 +12,7 @@ class DriversRepositoryImpl(
 ) : DriversRepository {
     override suspend fun getDrivers(): Flow<Result<List<Driver>>> = flow {
         try {
-            val drivers = apiService.getDrivers().drivers.map { it.toDomain() }
+            val drivers = apiService.getDrivers().map { it.toDomain() }
             emit(Result.success(drivers))
         } catch (e: Exception) {
             emit(Result.failure(e))
