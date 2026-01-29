@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.SportsMotorsports
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -20,9 +19,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.f1.info.core.ui.theme.F1InfoTheme
+import com.f1.info.features.drivers.presentation.ui.screen.DriversScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +58,9 @@ fun F1InfoApp() {
         }
     ) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Greeting(
-                name = "Android",
-                modifier = Modifier.padding(innerPadding)
-            )
+            if (currentDestination == AppDestinations.HOME) {
+                DriversScreen(modifier = Modifier.padding(innerPadding))
+            }
         }
     }
 }
@@ -72,20 +70,4 @@ enum class AppDestinations(
     val icon: ImageVector,
 ) {
     HOME("Drivers", Icons.Filled.SportsMotorsports),
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    F1InfoTheme {
-        Greeting("Android")
-    }
 }
