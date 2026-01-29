@@ -1,4 +1,4 @@
-package com.f1.info.features.home.domain.model
+package com.f1.info.features.drivers.domain.model
 
 data class Driver(
     val id: String,

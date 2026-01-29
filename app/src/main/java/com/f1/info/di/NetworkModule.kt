@@ -1,6 +1,6 @@
 package com.f1.info.di
 
-import com.f1.info.features.home.data.remote.DriversApiService
+import com.f1.info.features.drivers.data.remote.DriversApiService
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

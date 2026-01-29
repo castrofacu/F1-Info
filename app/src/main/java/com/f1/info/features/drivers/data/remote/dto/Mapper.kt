@@ -1,6 +1,6 @@
-package com.f1.info.features.home.data.remote.dto
+package com.f1.info.features.drivers.data.remote.dto
 
-import com.f1.info.features.home.domain.model.Driver
+import com.f1.info.features.drivers.domain.model.Driver
 
 fun DriverDto.toDomain(): Driver {
     return Driver(
