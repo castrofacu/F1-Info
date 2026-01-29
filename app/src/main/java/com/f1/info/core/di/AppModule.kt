@@ -1,4 +1,4 @@
-package com.f1.info.di
+package com.f1.info.core.di
 
 import com.f1.info.features.drivers.data.repository.DriversRepositoryImpl
 import com.f1.info.features.drivers.domain.repository.DriversRepository

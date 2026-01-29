@@ -1,4 +1,4 @@
-package com.f1.info.di
+package com.f1.info.core.di
 
 import com.f1.info.features.drivers.data.remote.DriversApiService
 import org.koin.dsl.module
