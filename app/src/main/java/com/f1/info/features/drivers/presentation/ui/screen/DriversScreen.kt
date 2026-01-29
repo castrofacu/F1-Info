@@ -94,8 +94,8 @@ private fun DriversScreenSuccessPreview() {
             state = DriversState(
                 isLoading = false,
                 drivers = listOf(
-                    Driver("1", "Max Verstappen", 33, "red_bull", "Netherlands"),
-                    Driver("2", "Lando Norris", 4, "mclaren", "Great Britain")
+                    Driver(1, "Max Verstappen", 1, "Red Bull Racing", "", "#3671C6"),
+                    Driver(2, "Lando Norris", 4, "McLaren", "", "#FF8000")
                 )
             ),
             snackbarHostState = remember { SnackbarHostState() },

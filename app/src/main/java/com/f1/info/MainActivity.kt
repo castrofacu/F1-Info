@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.SportsMotorsports
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
 @PreviewScreenSizes
 @Composable
 fun F1InfoApp() {
-    var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
+    var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.DRIVERS) }
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
@@ -58,7 +59,7 @@ fun F1InfoApp() {
         }
     ) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            if (currentDestination == AppDestinations.HOME) {
+            if (currentDestination == AppDestinations.DRIVERS) {
                 DriversScreen(modifier = Modifier.padding(innerPadding))
             }
         }
@@ -69,5 +70,6 @@ enum class AppDestinations(
     val label: String,
     val icon: ImageVector,
 ) {
-    HOME("Drivers", Icons.Filled.SportsMotorsports),
+    DRIVERS("Drivers", Icons.Filled.SportsMotorsports),
+    TEAMS("Teams", Icons.Filled.Group),
 }
