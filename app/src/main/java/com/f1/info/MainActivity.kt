@@ -70,6 +70,5 @@ enum class AppDestinations(
     val label: String,
     val icon: ImageVector,
 ) {
-    DRIVERS("Drivers", Icons.Filled.SportsMotorsports),
-    TEAMS("Teams", Icons.Filled.Group),
+    DRIVERS("Drivers", Icons.Filled.SportsMotorsports)
 }
