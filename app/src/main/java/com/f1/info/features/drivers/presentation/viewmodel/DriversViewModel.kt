@@ -42,7 +42,7 @@ class DriversViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
 
-            getAllDriversUseCase().fold(
+            getAllDriversUseCase(LAST_2025_RACE_SESSION_KEY).fold(
                 onSuccess = { drivers ->
                     _state.value = _state.value.copy(isLoading = false, drivers = drivers)
                 },
@@ -53,5 +53,9 @@ class DriversViewModel(
                 }
             )
         }
+    }
+
+    companion object {
+        private const val LAST_2025_RACE_SESSION_KEY = 9839
     }
 }

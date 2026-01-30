@@ -8,9 +8,9 @@ import com.f1.info.features.drivers.domain.repository.DriversRepository
 class DriversRepositoryImpl(
     private val apiService: DriversApiService
 ) : DriversRepository {
-    override suspend fun getDrivers(): Result<List<Driver>> {
+    override suspend fun getDrivers(sessionKey: Int): Result<List<Driver>> {
         return try {
-            val drivers = apiService.getDrivers().map { it.toDomain() }
+            val drivers = apiService.getDrivers(sessionKey).map { it.toDomain() }
             Result.success(drivers)
         } catch (e: Exception) {
             Result.failure(e)
