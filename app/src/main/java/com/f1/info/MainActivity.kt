@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.SportsMotorsports
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
