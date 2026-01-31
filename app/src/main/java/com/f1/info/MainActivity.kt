@@ -7,9 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.SportsMotorsports
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,9 +19,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import com.f1.info.ui.theme.F1InfoTheme
+import com.f1.info.core.ui.theme.F1InfoTheme
+import com.f1.info.features.drivers.presentation.ui.screen.DriversScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +38,7 @@ class MainActivity : ComponentActivity() {
 @PreviewScreenSizes
 @Composable
 fun F1InfoApp() {
-    var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
+    var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.DRIVERS) }
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
@@ -60,10 +58,9 @@ fun F1InfoApp() {
         }
     ) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Greeting(
-                name = "Android",
-                modifier = Modifier.padding(innerPadding)
-            )
+            if (currentDestination == AppDestinations.DRIVERS) {
+                DriversScreen(modifier = Modifier.padding(innerPadding))
+            }
         }
     }
 }
@@ -72,23 +69,5 @@ enum class AppDestinations(
     val label: String,
     val icon: ImageVector,
 ) {
-    HOME("Home", Icons.Default.Home),
-    FAVORITES("Favorites", Icons.Default.Favorite),
-    PROFILE("Profile", Icons.Default.AccountBox),
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    F1InfoTheme {
-        Greeting("Android")
-    }
+    DRIVERS("Drivers", Icons.Filled.SportsMotorsports)
 }
