@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class DriverDto(
     @SerializedName("driver_number")
-    val driverNumber: Int,
+    val number: Int,
     @SerializedName("full_name")
     val fullName: String,
     @SerializedName("first_name")

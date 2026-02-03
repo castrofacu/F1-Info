@@ -5,13 +5,13 @@ import com.f1.info.core.domain.model.Driver
 
 fun DriverDto.toDomain(): Driver {
     return Driver(
-        driverNumber = driverNumber,
+        number = number,
         broadcastName = broadcastName,
         fullName = fullName,
         firstName = firstName,
         lastName = lastName,
         headshotUrl = headshotUrl,
         teamName = teamName,
-        teamColour = teamColour
+        teamColour = "#$teamColour"
     )
 }

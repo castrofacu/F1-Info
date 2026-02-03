@@ -14,8 +14,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.f1.info.core.domain.model.Driver
 import com.f1.info.core.ui.theme.F1InfoTheme
-import com.f1.info.features.drivers.domain.model.Driver
 import com.f1.info.features.drivers.presentation.mvi.DriversEffect
 import com.f1.info.features.drivers.presentation.mvi.DriversIntent
 import com.f1.info.features.drivers.presentation.mvi.DriversState
@@ -94,8 +94,26 @@ private fun DriversScreenSuccessPreview() {
             state = DriversState(
                 isLoading = false,
                 drivers = listOf(
-                    Driver(1, "Max Verstappen", 1, "Red Bull Racing", "", "#3671C6"),
-                    Driver(2, "Lando Norris", 4, "McLaren", "", "#FF8000")
+                    Driver(
+                        fullName = "Max VERSTAPPEN",
+                        number = 1,
+                        teamName = "Red Bull Racing",
+                        headshotUrl = "https://www.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png",
+                        teamColour = "#3671C6",
+                        broadcastName = "M VERSTAPPEN",
+                        firstName = "Max",
+                        lastName = "Verstappen"
+                    ),
+                    Driver(
+                        fullName = "Lando NORRIS",
+                        number = 4,
+                        teamName = "McLaren",
+                        headshotUrl = "https://www.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png",
+                        teamColour = "#F58020",
+                        broadcastName = "M VERSTAPPEN",
+                        firstName = "Lando",
+                        lastName = "Norris"
+                    )
                 )
             ),
             snackbarHostState = remember { SnackbarHostState() },

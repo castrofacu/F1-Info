@@ -18,10 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.f1.info.core.ui.theme.F1InfoTheme
-import com.f1.info.features.drivers.domain.model.Driver
 import androidx.core.graphics.toColorInt
+import coil.compose.AsyncImage
+import com.f1.info.core.domain.model.Driver
+import com.f1.info.core.ui.theme.F1InfoTheme
 
 @Composable
 fun DriverCard(driver: Driver, modifier: Modifier = Modifier) {
@@ -38,12 +38,12 @@ fun DriverCard(driver: Driver, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.width(8.dp))
             AsyncImage(
                 model = driver.headshotUrl,
-                contentDescription = driver.name,
+                contentDescription = driver.fullName,
                 modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = driver.name, style = MaterialTheme.typography.bodyLarge)
+                Text(text = driver.fullName, style = MaterialTheme.typography.bodyLarge)
                 Text(text = driver.teamName, style = MaterialTheme.typography.bodySmall)
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -58,12 +58,14 @@ private fun DriverCardPreview() {
     F1InfoTheme {
         DriverCard(
             driver = Driver(
-                id = 1,
-                name = "Max Verstappen",
+                fullName = "Max VERSTAPPEN",
                 number = 1,
                 teamName = "Red Bull Racing",
                 headshotUrl = "https://www.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png",
-                teamColour = "#3671C6"
+                teamColour = "#3671C6",
+                broadcastName = "M VERSTAPPEN",
+                firstName = "Max",
+                lastName = "Verstappen"
             )
         )
     }
