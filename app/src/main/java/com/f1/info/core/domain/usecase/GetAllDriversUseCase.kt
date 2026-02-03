@@ -1,6 +1,6 @@
-package com.f1.info.features.drivers.domain.usecase
+package com.f1.info.core.domain.usecase
 
-import com.f1.info.features.drivers.domain.repository.DriversRepository
+import com.f1.info.core.domain.repository.DriversRepository
 
 class GetAllDriversUseCase(
     private val driversRepository: DriversRepository
