@@ -2,7 +2,7 @@ package com.f1.info.features.drivers.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.f1.info.features.drivers.domain.usecase.GetAllDriversUseCase
+import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.features.drivers.presentation.mvi.DriversEffect
 import com.f1.info.features.drivers.presentation.mvi.DriversIntent
 import com.f1.info.features.drivers.presentation.mvi.DriversState
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class DriversViewModel(
-    private val getAllDriversUseCase: GetAllDriversUseCase
+    private val getAllDriversUseCase: GetDriversUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DriversState())
@@ -32,7 +32,7 @@ class DriversViewModel(
             is DriversIntent.RetryLoad -> loadDrivers()
             is DriversIntent.OnDriverClick -> {
                 viewModelScope.launch {
-                    _effect.send(DriversEffect.NavigateToDriverDetail(intent.driver.id))
+                    _effect.send(DriversEffect.NavigateToDriverDetail(intent.driver.driverNumber))
                 }
             }
         }
