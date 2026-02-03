@@ -32,7 +32,7 @@ class DriversViewModel(
             is DriversIntent.RetryLoad -> loadDrivers()
             is DriversIntent.OnDriverClick -> {
                 viewModelScope.launch {
-                    _effect.send(DriversEffect.NavigateToDriverDetail(intent.driver.driverNumber))
+                    _effect.send(DriversEffect.NavigateToDriverDetail(intent.driver.number))
                 }
             }
         }
