@@ -1,6 +1,6 @@
 package com.f1.info.core.di
 
-import com.f1.info.features.drivers.data.remote.DriversApiService
+import com.f1.info.core.data.remote.OpenF1ApiService
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,6 +15,6 @@ val networkModule = module {
             .build()
     }
     single {
-        get<Retrofit>().create(DriversApiService::class.java)
+        get<Retrofit>().create(OpenF1ApiService::class.java)
     }
 }
