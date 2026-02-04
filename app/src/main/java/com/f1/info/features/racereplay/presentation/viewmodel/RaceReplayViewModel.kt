@@ -1,6 +1,5 @@
 package com.f1.info.features.racereplay.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.f1.info.core.domain.model.Driver
@@ -24,7 +23,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.io.Console
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -155,10 +153,5 @@ class RaceReplayViewModel(
             delay(REPLAY_TICK_DELAY_MS)
             currentTime = currentTime.plus(REPLAY_TIME_ADVANCE_MINUTES, ChronoUnit.MINUTES)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        replayJob?.cancel()
     }
 }
