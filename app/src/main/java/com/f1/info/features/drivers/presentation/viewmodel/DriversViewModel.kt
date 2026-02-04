@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class DriversViewModel(
-    private val getAllDriversUseCase: GetDriversUseCase
+    private val getDriversUseCase: GetDriversUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DriversState())
@@ -42,7 +42,7 @@ class DriversViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
 
-            getAllDriversUseCase(LAST_2025_RACE_SESSION_KEY).fold(
+            getDriversUseCase(LAST_2025_RACE_SESSION_KEY).fold(
                 onSuccess = { drivers ->
                     _state.value = _state.value.copy(isLoading = false, drivers = drivers)
                 },
