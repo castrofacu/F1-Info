@@ -10,6 +10,7 @@ import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.core.domain.usecase.GetPositionsUseCase
 import com.f1.info.core.domain.usecase.GetRacesUseCase
 import com.f1.info.features.drivers.presentation.viewmodel.DriversViewModel
+import com.f1.info.features.racereplay.presentation.viewmodel.RaceReplayViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -31,4 +32,6 @@ val appModule = module {
     }
 
     factory { GetPositionsUseCase(get()) }
+
+    viewModel { RaceReplayViewModel(get(), get()) }
 }
