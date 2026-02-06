@@ -38,7 +38,7 @@ fun DriverPositionCard(driver: DriverPosition) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = driver.position.toString(),
+                text = driver.position?.toString() ?: "N/A",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -77,8 +77,8 @@ private fun DriverPositionCardPreview() {
             number = 44,
             name = "Lewis Hamilton",
             teamName = "Mercedes",
-            headshotUrl = null, // Testing with a null URL
-            teamColour = "#6CD3BF", // Mercedes team color
+            headshotUrl = null,
+            teamColour = "#6CD3BF",
             position = 1
         )
         DriverPositionCard(driver = sampleDriver)

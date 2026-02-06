@@ -6,5 +6,5 @@ data class DriverPosition(
     val teamName: String,
     val headshotUrl: String?,
     val teamColour: String,
-    val position: Int
+    val position: Int?
 )

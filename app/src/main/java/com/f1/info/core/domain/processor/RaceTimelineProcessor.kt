@@ -60,7 +60,7 @@ class RaceTimelineProcessor {
             val snapshot = cursors.map { cursor ->
                 val currentPos = cursor.advanceTo(timestamp)
                 createDriverPosition(cursor.driver, currentPos?.position)
-            }.sortedBy { it.position }
+            }.sortedWith(compareBy(nullsLast()) { it.position })
 
             snapshot
         }
@@ -73,7 +73,7 @@ class RaceTimelineProcessor {
             teamName = driver.teamName,
             headshotUrl = driver.headshotUrl,
             teamColour = driver.teamColour,
-            position = position ?: Int.MAX_VALUE
+            position = position
         )
     }
 
