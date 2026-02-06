@@ -68,10 +68,18 @@ fun RaceReplayScreen(viewModel: RaceReplayViewModel = koinViewModel()) {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Time: ${state.currentRaceTime}",
-                        modifier = Modifier.padding(end = 16.dp),
+                        text = "Abu Dhabi Grand Prix 2025",
                         style = MaterialTheme.typography.bodyLarge
                     )
+                },
+                actions = {
+                    if (state.isPlaying) {
+                        Text(
+                            text = "Time: ${state.currentRaceTime}",
+                            modifier = Modifier.padding(end = 16.dp),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
                 }
             )
         },
