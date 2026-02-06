@@ -1,8 +1,8 @@
-package com.f1.info.features.drivers.domain.usecase
+package com.f1.info.core.domain.usecase
 
-import com.f1.info.features.drivers.domain.repository.DriversRepository
+import com.f1.info.core.domain.repository.DriversRepository
 
-class GetAllDriversUseCase(
+class GetDriversUseCase(
     private val driversRepository: DriversRepository
 ) {
     suspend operator fun invoke(sessionKey: Int) = driversRepository.getDrivers(sessionKey)
