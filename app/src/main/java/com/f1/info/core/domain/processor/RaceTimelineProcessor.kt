@@ -81,7 +81,7 @@ class RaceTimelineProcessor {
         val driver: Driver,
         private val positions: List<Position>
     ) {
-        // Tracks the index of the *last valid known position*
+        // Tracks the index of the last valid known position
         // Starts at -1 meaning "race hasn't started for this driver"
         private var currentIndex = -1
 
