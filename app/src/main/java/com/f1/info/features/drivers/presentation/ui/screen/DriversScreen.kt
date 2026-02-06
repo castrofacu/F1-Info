@@ -110,7 +110,7 @@ private fun DriversScreenSuccessPreview() {
                         teamName = "McLaren",
                         headshotUrl = "https://www.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png",
                         teamColour = "#F58020",
-                        broadcastName = "M VERSTAPPEN",
+                        broadcastName = "L NORRIS",
                         firstName = "Lando",
                         lastName = "Norris"
                     )
