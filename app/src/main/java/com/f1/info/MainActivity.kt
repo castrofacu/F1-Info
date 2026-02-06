@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.OndemandVideo
 import androidx.compose.material.icons.filled.SportsMotorsports
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -22,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.f1.info.core.ui.theme.F1InfoTheme
 import com.f1.info.features.drivers.presentation.ui.screen.DriversScreen
+import com.f1.info.features.racereplay.presentation.ui.screen.RaceReplayScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +60,9 @@ fun F1InfoApp() {
         }
     ) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            if (currentDestination == AppDestinations.DRIVERS) {
-                DriversScreen(modifier = Modifier.padding(innerPadding))
+            when (currentDestination) {
+                AppDestinations.DRIVERS -> DriversScreen(modifier = Modifier.padding(innerPadding))
+                AppDestinations.RACE_REPLAY -> RaceReplayScreen(modifier = Modifier.padding(innerPadding))
             }
         }
     }
@@ -69,5 +72,6 @@ enum class AppDestinations(
     val label: String,
     val icon: ImageVector,
 ) {
-    DRIVERS("Drivers", Icons.Filled.SportsMotorsports)
+    DRIVERS("Drivers", Icons.Filled.SportsMotorsports),
+    RACE_REPLAY("Race Replay", Icons.Filled.OndemandVideo)
 }
