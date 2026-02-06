@@ -7,7 +7,7 @@ import java.time.Instant
 import java.util.TreeMap
 import java.util.ArrayList
 
-// THIS ASSUME TIMESTAMPS IN ORDER
+// THIS ASSUMES TIMESTAMPS ARE IN ORDER
 class RaceTimelineProcessor {
 
     fun buildTimeline(
