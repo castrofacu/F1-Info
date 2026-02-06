@@ -62,7 +62,7 @@ fun F1InfoApp() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             when (currentDestination) {
                 AppDestinations.DRIVERS -> DriversScreen(modifier = Modifier.padding(innerPadding))
-                AppDestinations.RACE_REPLAY -> RaceReplayScreen()
+                AppDestinations.RACE_REPLAY -> RaceReplayScreen(modifier = Modifier.padding(innerPadding))
             }
         }
     }

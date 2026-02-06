@@ -38,7 +38,10 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RaceReplayScreen(viewModel: RaceReplayViewModel = koinViewModel()) {
+fun RaceReplayScreen(
+    modifier: Modifier = Modifier,
+    viewModel: RaceReplayViewModel = koinViewModel()
+) {
     val state by viewModel.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -94,7 +97,8 @@ fun RaceReplayScreen(viewModel: RaceReplayViewModel = koinViewModel()) {
                 )
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        modifier = modifier
     )
     { paddingValues ->
         Box(
