@@ -101,7 +101,7 @@ class RaceReplayViewModel(
                     teamName = driver.teamName,
                     headshotUrl = driver.headshotUrl,
                     teamColour = driver.teamColour,
-                    position = positionData?.position ?: 0
+                    position = positionData?.position ?: Int.MAX_VALUE
                 )
             }.sortedBy { it.position }
         }
