@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,7 +58,7 @@ fun RaceReplayScreen(viewModel: RaceReplayViewModel = koinViewModel()) {
     DisposableEffect(Unit) {
         onDispose {
             if (state.isPlaying) {
-                viewModel.handleIntent(RaceReplayIntent.PlayPause)
+                viewModel.handleIntent(RaceReplayIntent.PlayStop)
             }
         }
     }
@@ -85,11 +85,11 @@ fun RaceReplayScreen(viewModel: RaceReplayViewModel = koinViewModel()) {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { viewModel.handleIntent(RaceReplayIntent.PlayPause) }
+                onClick = { viewModel.handleIntent(RaceReplayIntent.PlayStop) }
             ) {
                 Icon(
-                    imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = if (state.isPlaying) "Pause" else "Play"
+                    imageVector = if (state.isPlaying) Icons.Default.Stop else Icons.Default.PlayArrow,
+                    contentDescription = if (state.isPlaying) "Stop" else "Play"
                 )
             }
         }

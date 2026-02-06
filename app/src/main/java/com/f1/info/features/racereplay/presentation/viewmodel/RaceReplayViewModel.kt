@@ -54,7 +54,7 @@ class RaceReplayViewModel(
     fun handleIntent(intent: RaceReplayIntent) {
         when (intent) {
             is RaceReplayIntent.LoadRaceData -> loadRaceData()
-            is RaceReplayIntent.PlayPause -> togglePlayPause()
+            is RaceReplayIntent.PlayStop -> togglePlayStop()
             is RaceReplayIntent.RetryLoad -> loadRaceData()
         }
     }
@@ -107,7 +107,7 @@ class RaceReplayViewModel(
         }
     }
 
-    private fun togglePlayPause() {
+    private fun togglePlayStop() {
         isPlaying.value = !isPlaying.value
         _state.value = _state.value.copy(isPlaying = isPlaying.value)
     }
