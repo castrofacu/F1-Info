@@ -2,8 +2,7 @@ package com.f1.info.features.racereplay.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.f1.info.core.domain.model.Driver
-import com.f1.info.core.domain.model.Position
+import com.f1.info.core.domain.processor.RaceTimelineProcessor
 import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.core.domain.usecase.GetPositionsUseCase
 import com.f1.info.features.racereplay.presentation.model.DriverPosition
@@ -27,10 +26,12 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.TreeMap
 
 class RaceReplayViewModel(
     private val getPositionsUseCase: GetPositionsUseCase,
-    private val getDriversUseCase: GetDriversUseCase
+    private val getDriversUseCase: GetDriversUseCase,
+    private val timelineProcessor: RaceTimelineProcessor
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RaceReplayState())
@@ -42,8 +43,7 @@ class RaceReplayViewModel(
     private var replayJob: Job? = null
     private val isPlaying = MutableStateFlow(false)
 
-    private var timelineSnapshots: Map<Instant, List<DriverPosition>> = emptyMap()
-    private var drivers: List<Driver> = emptyList()
+    private var timelineSnapshots: TreeMap<Instant, List<DriverPosition>> = TreeMap()
 
     companion object {
         private const val LAST_2025_RACE_SESSION_KEY = 9839
@@ -68,42 +68,16 @@ class RaceReplayViewModel(
 
             if (positionsResult.isSuccess && driversResult.isSuccess) {
                 val allPositions = positionsResult.getOrThrow()
-                drivers = driversResult.getOrThrow()
-                timelineSnapshots = buildTimelineSnapshots(allPositions, drivers)
-                
+                val drivers = driversResult.getOrThrow()
+                timelineSnapshots = timelineProcessor.buildTimeline(allPositions, drivers)
+
+
                 startReplay()
             } else {
                 val errorMessage = "Failed to load race data"
                 _state.value = RaceReplayState(isLoading = false, error = errorMessage)
                 _effect.send(RaceReplayEffect.ShowError(errorMessage))
             }
-        }
-    }
-
-    private fun buildTimelineSnapshots(
-        positions: List<Position>,
-        drivers: List<Driver>
-    ): Map<Instant, List<DriverPosition>> {
-        val positionsByDriver = positions
-            .groupBy { it.driverNumber }
-            .mapValues { (_, driverPositions) -> driverPositions.sortedBy { it.date } }
-
-        val instants = positions.map { it.date }.distinct().sorted()
-
-        return instants.associateWith { timestamp ->
-            drivers.map { driver ->
-                val positionData = positionsByDriver[driver.number]
-                    ?.lastOrNull { it.date <= timestamp }
-
-                DriverPosition(
-                    number = driver.number,
-                    name = driver.fullName,
-                    teamName = driver.teamName,
-                    headshotUrl = driver.headshotUrl,
-                    teamColour = driver.teamColour,
-                    position = positionData?.position ?: Int.MAX_VALUE
-                )
-            }.sortedBy { it.position }
         }
     }
 
@@ -116,10 +90,9 @@ class RaceReplayViewModel(
     private fun startReplay() {
         replayJob?.cancel()
         replayJob = viewModelScope.launch {
-            val startTime = timelineSnapshots.keys.minOrNull() ?: return@launch
-            
-            // Set initial state immediately
-            val initialSnapshot = timelineSnapshots[startTime] ?: emptyList()
+            val startTime = timelineSnapshots.firstKey() ?: return@launch
+
+            val initialSnapshot = getSnapshotAtTime(startTime)
             _state.value = _state.value.copy(
                 isLoading = false,
                 drivers = initialSnapshot
@@ -129,15 +102,15 @@ class RaceReplayViewModel(
                 if (playing) createRaceTimeFlow(startTime) else flow { }
             }
                 .onEach { currentTime ->
-                    val snapshot = timelineSnapshots.entries
-                        .filter { it.key <= currentTime }
-                        .maxByOrNull { it.key }
-                        ?.value ?: emptyList()
-
+                    val snapshot = getSnapshotAtTime(currentTime)
                     _state.value = _state.value.copy(drivers = snapshot)
                 }
                 .collect()
         }
+    }
+
+    private fun getSnapshotAtTime(currentTime: Instant): List<DriverPosition> {
+        return timelineSnapshots.floorEntry(currentTime)?.value ?: emptyList()
     }
 
     private fun createRaceTimeFlow(startTime: Instant): Flow<Instant> = flow {

@@ -2,6 +2,7 @@ package com.f1.info.core.di
 
 import com.f1.info.core.data.repository.DriversRepositoryImpl
 import com.f1.info.core.data.repository.PositionsRepositoryImpl
+import com.f1.info.core.domain.processor.RaceTimelineProcessor
 import com.f1.info.core.domain.repository.DriversRepository
 import com.f1.info.core.domain.repository.PositionsRepository
 import com.f1.info.core.domain.usecase.GetDriversUseCase
@@ -23,5 +24,7 @@ val appModule = module {
 
     factory { GetPositionsUseCase(get()) }
 
-    viewModel { RaceReplayViewModel(get(), get()) }
+    factory { RaceTimelineProcessor() }
+
+    viewModel { RaceReplayViewModel(get(), get(), get()) }
 }
