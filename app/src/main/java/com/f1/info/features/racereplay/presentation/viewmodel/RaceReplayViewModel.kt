@@ -2,6 +2,7 @@ package com.f1.info.features.racereplay.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.f1.info.core.common.AppConstants
 import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.core.domain.usecase.GetPositionsUseCase
 import com.f1.info.features.racereplay.presentation.model.DriverPosition
@@ -46,7 +47,6 @@ class RaceReplayViewModel(
     private var timelineSnapshots: TreeMap<Instant, List<DriverPosition>> = TreeMap()
 
     companion object {
-        private const val LAST_2025_RACE_SESSION_KEY = 9839
         private const val REPLAY_TICK_DELAY_MS = 500L
         private const val REPLAY_TIME_ADVANCE_MINUTES = 2L
     }
@@ -63,8 +63,8 @@ class RaceReplayViewModel(
         viewModelScope.launch {
             _state.value = RaceReplayState(isLoading = true)
 
-            val positionsResult = getPositionsUseCase(LAST_2025_RACE_SESSION_KEY)
-            val driversResult = getDriversUseCase(LAST_2025_RACE_SESSION_KEY)
+            val positionsResult = getPositionsUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY)
+            val driversResult = getDriversUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY)
 
             if (positionsResult.isSuccess && driversResult.isSuccess) {
                 val allPositions = positionsResult.getOrThrow()
