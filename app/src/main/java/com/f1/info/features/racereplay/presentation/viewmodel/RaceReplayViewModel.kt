@@ -2,13 +2,13 @@ package com.f1.info.features.racereplay.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.f1.info.core.domain.processor.RaceTimelineProcessor
 import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.core.domain.usecase.GetPositionsUseCase
 import com.f1.info.features.racereplay.presentation.model.DriverPosition
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayState
+import com.f1.info.features.racereplay.presentation.processor.RaceTimelineProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
