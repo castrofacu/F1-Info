@@ -2,6 +2,7 @@ package com.f1.info.features.drivers.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.f1.info.core.common.AppConstants
 import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.features.drivers.presentation.mvi.DriversEffect
 import com.f1.info.features.drivers.presentation.mvi.DriversIntent
@@ -42,7 +43,7 @@ class DriversViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
 
-            getDriversUseCase(LAST_2025_RACE_SESSION_KEY).fold(
+            getDriversUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY).fold(
                 onSuccess = { drivers ->
                     _state.value = _state.value.copy(isLoading = false, drivers = drivers)
                 },
@@ -53,9 +54,5 @@ class DriversViewModel(
                 }
             )
         }
-    }
-
-    companion object {
-        private const val LAST_2025_RACE_SESSION_KEY = 9839
     }
 }
