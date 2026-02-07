@@ -2,7 +2,6 @@ package com.f1.info.features.racereplay.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,8 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -30,6 +27,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.f1.info.core.ui.components.ErrorComponent
+import com.f1.info.core.ui.components.Loading
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
 import com.f1.info.features.racereplay.presentation.ui.components.DriverPositionCard
@@ -108,16 +107,11 @@ fun RaceReplayScreen(
             contentAlignment = Alignment.Center
         ) {
             when {
-                state.isLoading -> {
-                    CircularProgressIndicator()
-                }
+                state.isLoading -> Loading()
                 state.error != null -> {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = state.error!!, style = MaterialTheme.typography.bodyLarge)
-                        Button(onClick = { viewModel.handleIntent(RaceReplayIntent.RetryLoad) }) {
-                            Text("Retry")
-                        }
-                    }
+                    ErrorComponent(
+                        message = state.error!!,
+                        onRetry = { viewModel.handleIntent(RaceReplayIntent.RetryLoad) })
                 }
                 else -> {
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
