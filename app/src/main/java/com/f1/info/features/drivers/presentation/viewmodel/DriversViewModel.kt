@@ -2,6 +2,8 @@ package com.f1.info.features.drivers.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.f1.info.core.common.AppConstants
+import com.f1.info.core.domain.model.DomainError
+import com.f1.info.core.domain.model.Result
 import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.core.mvi.BaseViewModel
 import com.f1.info.features.drivers.presentation.mvi.DriversEffect
@@ -33,16 +35,20 @@ class DriversViewModel(
         viewModelScope.launch {
             updateState { copy(isLoading = true, error = null) }
 
-            getDriversUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY).fold(
-                onSuccess = { drivers ->
-                    updateState { copy(isLoading = false, drivers = drivers) }
-                },
-                onFailure = { error ->
-                    val errorMessage = error.message ?: "An unexpected error occurred"
+            when (val result = getDriversUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY)) {
+                is Result.Success -> {
+                    updateState { copy(isLoading = false, drivers = result.value) }
+                }
+                is Result.Failure -> {
+                    val errorMessage = when (result.error) {
+                        is DomainError.NetworkError -> "Network error. Please check your connection."
+                        is DomainError.ServerError -> "Server error: ${result.error.code}"
+                        is DomainError.UnknownError -> "An unexpected error occurred."
+                    }
                     updateState { copy(isLoading = false, error = errorMessage) }
                     sendEffect(DriversEffect.ShowError(errorMessage))
                 }
-            )
+            }
         }
     }
 }
