@@ -1,4 +1,4 @@
-package com.f1.info.features.drivers.presentation.ui.components
+package com.f1.info.core.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

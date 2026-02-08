@@ -15,13 +15,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.f1.info.core.domain.model.Driver
+import com.f1.info.core.ui.components.ErrorComponent
+import com.f1.info.core.ui.components.LoadingComponent
 import com.f1.info.core.ui.theme.F1InfoTheme
 import com.f1.info.features.drivers.presentation.mvi.DriversEffect
 import com.f1.info.features.drivers.presentation.mvi.DriversIntent
 import com.f1.info.features.drivers.presentation.mvi.DriversState
 import com.f1.info.features.drivers.presentation.ui.components.DriverCard
-import com.f1.info.features.drivers.presentation.ui.components.ErrorComponent
-import com.f1.info.features.drivers.presentation.ui.components.Loading
 import com.f1.info.features.drivers.presentation.viewmodel.DriversViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -66,7 +66,7 @@ private fun DriversScreenContent(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         when {
-            state.isLoading -> Loading(modifier = Modifier.padding(innerPadding))
+            state.isLoading -> LoadingComponent(modifier = Modifier.padding(innerPadding))
             state.error != null -> ErrorComponent(
                 message = state.error,
                 modifier = Modifier.padding(innerPadding),
