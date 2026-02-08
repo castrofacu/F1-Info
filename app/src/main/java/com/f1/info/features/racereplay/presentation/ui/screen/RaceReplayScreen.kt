@@ -28,7 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.f1.info.core.ui.components.ErrorComponent
-import com.f1.info.core.ui.components.Loading
+import com.f1.info.core.ui.components.LoadingComponent
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
 import com.f1.info.features.racereplay.presentation.ui.components.DriverPositionCard
@@ -107,7 +107,7 @@ fun RaceReplayScreen(
             contentAlignment = Alignment.Center
         ) {
             when {
-                state.isLoading -> Loading()
+                state.isLoading -> LoadingComponent()
                 state.error != null -> {
                     ErrorComponent(
                         message = state.error!!,
