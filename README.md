@@ -69,6 +69,10 @@ The project follows **Clean Architecture** principles with **MVI (Model-View-Int
 ## Screenshots
 (Coming soon)
 
+## API Reference
+
+This project consumes the [OpenF1 API](https://openf1.org/) for all its data. Please note that this is a third-party API and is not affiliated with this project.
+
 ## Contributing
 This is a personal portfolio project, but feedback and suggestions are always welcome!
 
