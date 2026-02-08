@@ -2,9 +2,12 @@ package com.f1.info.features.racereplay.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.f1.info.core.common.AppConstants
+import com.f1.info.core.domain.model.DomainError
+import com.f1.info.core.domain.model.Result
 import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.core.domain.usecase.GetPositionsUseCase
 import com.f1.info.core.mvi.BaseViewModel
+import com.f1.info.core.presentation.util.ErrorMessageMapper
 import com.f1.info.features.racereplay.presentation.model.DriverPosition
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
@@ -52,24 +55,30 @@ class RaceReplayViewModel(
 
     private fun loadRaceData() {
         viewModelScope.launch {
-            updateState { RaceReplayState(isLoading = true) }
+            updateState { copy(isLoading = true, error = null) }
 
             val positionsResult = getPositionsUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY)
             val driversResult = getDriversUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY)
 
-            if (positionsResult.isSuccess && driversResult.isSuccess) {
-                val allPositions = positionsResult.getOrThrow()
-                val drivers = driversResult.getOrThrow()
+            if (positionsResult is Result.Success && driversResult is Result.Success) {
+                val allPositions = positionsResult.value
+                val drivers = driversResult.value
                 timelineSnapshots = timelineProcessor.buildTimeline(allPositions, drivers)
-
-
                 startReplay()
             } else {
-                val errorMessage = "Failed to load race data"
-                updateState { RaceReplayState(isLoading = false, error = errorMessage) }
-                sendEffect(RaceReplayEffect.ShowError(errorMessage))
+                if (positionsResult is Result.Failure) {
+                    handleError(positionsResult.error)
+                } else if (driversResult is Result.Failure) {
+                    handleError(driversResult.error)
+                }
             }
         }
+    }
+
+    private fun handleError(error: DomainError) {
+        val errorMessage = ErrorMessageMapper.map(error)
+        updateState { copy(isLoading = false, error = errorMessage) }
+        viewModelScope.launch { sendEffect(RaceReplayEffect.ShowError(errorMessage)) }
     }
 
     private fun togglePlayStop() {

@@ -6,6 +6,7 @@ import com.f1.info.core.domain.model.Driver
 import com.f1.info.core.domain.model.DomainError
 import com.f1.info.core.domain.model.Result
 import com.f1.info.core.domain.repository.DriversRepository
+import com.google.gson.JsonSyntaxException
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -20,6 +21,8 @@ class DriversRepositoryImpl(
             Result.Failure(DomainError.NetworkError(e))
         } catch (e: HttpException) {
             Result.Failure(DomainError.ServerError(e.code(), e.message()))
+        } catch (e: JsonSyntaxException) {
+            Result.Failure(DomainError.ParseError(e))
         } catch (e: Exception) {
             Result.Failure(DomainError.UnknownError(e))
         }
