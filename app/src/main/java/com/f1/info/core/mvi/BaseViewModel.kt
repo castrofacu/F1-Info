@@ -14,7 +14,7 @@ abstract class BaseViewModel<State, Intent, Effect>(
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
 
-    private val _effect = Channel<Effect>()
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
     protected fun updateState(reducer: State.() -> State) {
