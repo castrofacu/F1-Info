@@ -1,4 +1,4 @@
-package com.f1.info.core.domain.processor
+package com.f1.info.features.racereplay.presentation.processor
 
 import com.f1.info.core.domain.model.Driver
 import com.f1.info.core.domain.model.Position
