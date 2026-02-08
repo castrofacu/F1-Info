@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -87,7 +88,7 @@ class RaceReplayViewModel(
     }
 
     private fun togglePlayStop() {
-        isPlaying.value = !isPlaying.value
+        isPlaying.update { !it }
         updateState { copy(isPlaying = this@RaceReplayViewModel.isPlaying.value) }
     }
 
