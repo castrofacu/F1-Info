@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.f1.info.core.common.AppConstants
 import com.f1.info.core.domain.model.fold
 import com.f1.info.core.domain.usecase.GetDriversUseCase
-import com.f1.info.core.mvi.BaseViewModel
+import com.f1.info.core.presentation.mvi.BaseViewModel
 import com.f1.info.core.presentation.util.ErrorMessageMapper
 import com.f1.info.features.drivers.presentation.mvi.DriversEffect
 import com.f1.info.features.drivers.presentation.mvi.DriversIntent

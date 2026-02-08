@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import com.f1.info.core.ui.theme.F1InfoTheme
+import com.f1.info.core.presentation.ui.theme.F1InfoTheme
 import com.f1.info.features.drivers.presentation.ui.screen.DriversScreen
 import com.f1.info.features.racereplay.presentation.ui.screen.RaceReplayScreen
 
