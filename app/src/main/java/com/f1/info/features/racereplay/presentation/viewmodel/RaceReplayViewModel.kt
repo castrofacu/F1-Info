@@ -3,7 +3,7 @@ package com.f1.info.features.racereplay.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.f1.info.core.common.AppConstants
 import com.f1.info.core.domain.model.DomainError
-import com.f1.info.core.domain.model.Result
+import com.f1.info.core.domain.model.fold
 import com.f1.info.core.domain.usecase.GetDriversUseCase
 import com.f1.info.core.domain.usecase.GetPositionsUseCase
 import com.f1.info.core.mvi.BaseViewModel
@@ -15,6 +15,7 @@ import com.f1.info.features.racereplay.presentation.mvi.RaceReplayState
 import com.f1.info.features.racereplay.presentation.processor.RaceTimelineProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,21 +58,25 @@ class RaceReplayViewModel(
         viewModelScope.launch {
             updateState { copy(isLoading = true, error = null) }
 
-            val positionsResult = getPositionsUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY)
-            val driversResult = getDriversUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY)
+            val positionsResultDeferred = async { getPositionsUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY) }
+            val driversResultDeferred = async { getDriversUseCase(AppConstants.LAST_2025_RACE_SESSION_KEY) }
 
-            if (positionsResult is Result.Success && driversResult is Result.Success) {
-                val allPositions = positionsResult.value
-                val drivers = driversResult.value
-                timelineSnapshots = timelineProcessor.buildTimeline(allPositions, drivers)
-                startReplay()
-            } else {
-                if (positionsResult is Result.Failure) {
-                    handleError(positionsResult.error)
-                } else if (driversResult is Result.Failure) {
-                    handleError(driversResult.error)
-                }
-            }
+            val positionsResult = positionsResultDeferred.await()
+            val driversResult = driversResultDeferred.await()
+
+            positionsResult.fold(
+                onSuccess = { allPositions ->
+                    driversResult.fold(
+                        onSuccess = { drivers ->
+                            timelineSnapshots =
+                                timelineProcessor.buildTimeline(allPositions, drivers)
+                            startReplay()
+                        },
+                        onFailure = { handleError(it) }
+                    )
+                },
+                onFailure = { handleError(it) }
+            )
         }
     }
 
