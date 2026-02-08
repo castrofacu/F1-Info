@@ -15,9 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.f1.info.core.domain.model.Driver
-import com.f1.info.core.ui.components.ErrorComponent
-import com.f1.info.core.ui.components.LoadingComponent
-import com.f1.info.core.ui.theme.F1InfoTheme
+import com.f1.info.core.presentation.ui.components.ErrorComponent
+import com.f1.info.core.presentation.ui.components.LoadingComponent
+import com.f1.info.core.presentation.ui.theme.F1InfoTheme
 import com.f1.info.features.drivers.presentation.mvi.DriversEffect
 import com.f1.info.features.drivers.presentation.mvi.DriversIntent
 import com.f1.info.features.drivers.presentation.mvi.DriversState

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
 import com.f1.info.core.domain.model.Driver
-import com.f1.info.core.ui.theme.F1InfoTheme
+import com.f1.info.core.presentation.ui.theme.F1InfoTheme
 
 @Composable
 fun DriverCard(driver: Driver, modifier: Modifier = Modifier) {

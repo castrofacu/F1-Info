@@ -1,4 +1,4 @@
-package com.f1.info.core.mvi
+package com.f1.info.core.presentation.mvi
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel

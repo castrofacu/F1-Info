@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.f1.info.core.ui.theme.F1InfoTheme
+import com.f1.info.core.presentation.ui.theme.F1InfoTheme
 import com.f1.info.features.racereplay.presentation.model.DriverPosition
 
 @Composable

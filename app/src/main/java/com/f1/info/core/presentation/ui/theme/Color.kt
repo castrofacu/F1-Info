@@ -1,4 +1,4 @@
-package com.f1.info.core.ui.theme
+package com.f1.info.core.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
