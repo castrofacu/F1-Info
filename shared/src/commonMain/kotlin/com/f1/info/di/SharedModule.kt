@@ -20,6 +20,7 @@ import org.koin.dsl.module
 val sharedModule = module {
     single {
         HttpClient {
+            expectSuccess = true
             install(ContentNegotiation) {
                 json(Json {
                     ignoreUnknownKeys = true

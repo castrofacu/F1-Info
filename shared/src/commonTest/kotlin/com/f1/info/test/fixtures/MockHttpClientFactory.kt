@@ -29,6 +29,7 @@ object MockHttpClientFactory {
             )
         }
         return HttpClient(engine) {
+            expectSuccess = true
             install(ContentNegotiation) {
                 json(Json { ignoreUnknownKeys = true })
             }

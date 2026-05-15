@@ -4,6 +4,7 @@ import com.f1.info.domain.model.DomainError
 import com.f1.info.domain.model.Result
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
+import io.ktor.serialization.JsonConvertException
 import kotlinx.serialization.SerializationException
 
 suspend fun <T> safeApiCall(block: suspend () -> T): Result<T, DomainError> {
@@ -13,6 +14,8 @@ suspend fun <T> safeApiCall(block: suspend () -> T): Result<T, DomainError> {
         Result.Failure(DomainError.ServerError(e.response.status.value, e.message))
     } catch (e: ServerResponseException) {
         Result.Failure(DomainError.ServerError(e.response.status.value, e.message))
+    } catch (e: JsonConvertException) {
+        Result.Failure(DomainError.ParseError(e.message))
     } catch (e: SerializationException) {
         Result.Failure(DomainError.ParseError(e.message))
     } catch (e: Exception) {
