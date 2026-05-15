@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "F1 Info"
 include(":app")
+include(":shared")
  
