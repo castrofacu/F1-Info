@@ -1,21 +1,20 @@
-package com.f1.info.features.racereplay.presentation.processor
+package com.f1.info.data.timeline
 
-import com.f1.info.core.domain.model.Driver
-import com.f1.info.core.domain.model.Position
-import com.f1.info.features.racereplay.presentation.model.DriverPosition
-import java.time.Instant
-import java.util.TreeMap
-import java.util.ArrayList
+import com.f1.info.domain.model.Driver
+import com.f1.info.domain.model.Position
+import com.f1.info.domain.usecase.BuildRaceTimelineUseCase
+import com.f1.info.features.racereplay.model.DriverPosition
+import kotlinx.datetime.Instant
 
 // THIS ASSUMES TIMESTAMPS ARE IN ORDER
-class RaceTimelineProcessor {
+class RaceTimelineProcessor : BuildRaceTimelineUseCase {
 
-    fun buildTimeline(
+    override operator fun invoke(
         positions: List<Position>,
         drivers: List<Driver>
-    ): TreeMap<Instant, List<DriverPosition>> {
+    ): Map<Instant, List<DriverPosition>> {
         if (positions.isEmpty() || drivers.isEmpty()) {
-            return TreeMap()
+            return emptyMap()
         }
 
         val cursors = createDriverCursors(positions, drivers)
@@ -40,7 +39,7 @@ class RaceTimelineProcessor {
     }
 
     private fun extractTimestampsSequentially(positions: List<Position>): List<Instant> {
-        val timestamps = ArrayList<Instant>(positions.size)
+        val timestamps = mutableListOf<Instant>()
         var lastTime: Instant? = null
 
         for (pos in positions) {
@@ -55,15 +54,13 @@ class RaceTimelineProcessor {
     private fun generateSnapshots(
         timestamps: List<Instant>,
         cursors: List<DriverCursor>
-    ): TreeMap<Instant, List<DriverPosition>> {
-        return timestamps.associateWithTo(TreeMap()) { timestamp ->
-            val snapshot = cursors.map { cursor ->
+    ): Map<Instant, List<DriverPosition>> {
+        return timestamps.associateWith { timestamp ->
+            cursors.map { cursor ->
                 val currentPos = cursor.advanceTo(timestamp)
                 createDriverPosition(cursor.driver, currentPos?.position)
             }.sortedWith(compareBy(nullsLast()) { it.position })
-
-            snapshot
-        }
+        }.toSortedMap()
     }
 
     private fun createDriverPosition(driver: Driver, position: Int?): DriverPosition {
@@ -81,18 +78,13 @@ class RaceTimelineProcessor {
         val driver: Driver,
         private val positions: List<Position>
     ) {
-        // Tracks the index of the last valid known position
-        // Starts at -1 meaning "race hasn't started for this driver"
         private var currentIndex = -1
 
         fun advanceTo(timestamp: Instant): Position? {
-            // Look ahead to the next position
             while (currentIndex + 1 < positions.size &&
                 positions[currentIndex + 1].date <= timestamp) {
                 currentIndex++
             }
-
-            // Return valid position if we have started, otherwise null
             return if (currentIndex >= 0) positions[currentIndex] else null
         }
     }
