@@ -1,7 +1,7 @@
-package com.f1.info.core.data.remote.mapper
+package com.f1.info.data.mapper
 
-import com.f1.info.core.data.remote.dto.DriverDto
-import com.f1.info.core.domain.model.Driver
+import com.f1.info.data.dto.DriverDto
+import com.f1.info.domain.model.Driver
 
 fun DriverDto.toDomain(): Driver {
     return Driver(
