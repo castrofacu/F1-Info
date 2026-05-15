@@ -6,24 +6,21 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.OndemandVideo
-import androidx.compose.material.icons.filled.SportsMotorsports
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.f1.info.core.navigation.AppDestination
+import com.f1.info.core.navigation.rememberNavigationState
 import com.f1.info.core.presentation.ui.theme.F1InfoTheme
-import com.f1.info.features.drivers.presentation.ui.screen.DriversScreen
-import com.f1.info.features.racereplay.presentation.ui.screen.RaceReplayScreen
+import com.f1.info.features.drivers.presentation.navigation.driversNavGraph
+import com.f1.info.features.racereplay.presentation.navigation.raceReplayNavGraph
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,38 +37,36 @@ class MainActivity : ComponentActivity() {
 @PreviewScreenSizes
 @Composable
 fun F1InfoApp() {
-    var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.DRIVERS) }
+    val navigationState = rememberNavigationState()
+    val navBackStackEntry by navigationState.navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-            AppDestinations.entries.forEach {
+            AppDestination.topLevelDestinations.forEach { destination ->
                 item(
                     icon = {
                         Icon(
-                            it.icon,
-                            contentDescription = it.label
+                            destination.icon,
+                            contentDescription = destination.label
                         )
                     },
-                    label = { Text(it.label) },
-                    selected = it == currentDestination,
-                    onClick = { currentDestination = it }
+                    label = { Text(destination.label) },
+                    selected = currentDestination?.route == destination.route::class.qualifiedName,
+                    onClick = { navigationState.navigateToTopLevelDestination(destination) }
                 )
             }
         }
     ) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            when (currentDestination) {
-                AppDestinations.DRIVERS -> DriversScreen(modifier = Modifier.padding(innerPadding))
-                AppDestinations.RACE_REPLAY -> RaceReplayScreen(modifier = Modifier.padding(innerPadding))
+            NavHost(
+                navController = navigationState.navController,
+                startDestination = AppDestination.Drivers,
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                driversNavGraph()
+                raceReplayNavGraph()
             }
         }
     }
-}
-
-enum class AppDestinations(
-    val label: String,
-    val icon: ImageVector,
-) {
-    DRIVERS("Drivers", Icons.Filled.SportsMotorsports),
-    RACE_REPLAY("Race Replay", Icons.Filled.OndemandVideo)
 }
