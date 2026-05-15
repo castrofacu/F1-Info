@@ -1,4 +1,4 @@
-package com.f1.info.features.racereplay.presentation.mvi
+package com.f1.info.presentation.racereplay.mvi
 
 sealed interface RaceReplayIntent {
     data object LoadRaceData : RaceReplayIntent

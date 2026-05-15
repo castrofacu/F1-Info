@@ -30,10 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.f1.info.core.presentation.ui.components.ErrorComponent
 import com.f1.info.core.presentation.ui.components.LoadingComponent
-import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
-import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
+import com.f1.info.presentation.racereplay.mvi.RaceReplayEffect
+import com.f1.info.presentation.racereplay.mvi.RaceReplayIntent
 import com.f1.info.features.racereplay.presentation.ui.components.DriverPositionCard
-import com.f1.info.features.racereplay.presentation.viewmodel.RaceReplayViewModel
+import com.f1.info.presentation.racereplay.RaceReplayViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

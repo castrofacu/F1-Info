@@ -1,18 +1,18 @@
-package com.f1.info.features.racereplay.presentation.viewmodel
+package com.f1.info.presentation.racereplay
 
 import androidx.lifecycle.viewModelScope
-import com.f1.info.core.common.AppConstants
-import com.f1.info.core.presentation.mvi.BaseViewModel
-import com.f1.info.core.presentation.util.ErrorMessageMapper
 import com.f1.info.domain.model.DomainError
+import com.f1.info.domain.model.DriverPosition
 import com.f1.info.domain.model.fold
 import com.f1.info.domain.usecase.BuildRaceTimelineUseCase
 import com.f1.info.domain.usecase.GetDriversUseCase
 import com.f1.info.domain.usecase.GetPositionsUseCase
-import com.f1.info.domain.model.DriverPosition
-import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
-import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
-import com.f1.info.features.racereplay.presentation.mvi.RaceReplayState
+import com.f1.info.presentation.common.AppConstants
+import com.f1.info.presentation.mvi.BaseViewModel
+import com.f1.info.presentation.racereplay.mvi.RaceReplayEffect
+import com.f1.info.presentation.racereplay.mvi.RaceReplayIntent
+import com.f1.info.presentation.racereplay.mvi.RaceReplayState
+import com.f1.info.presentation.util.ErrorMessageMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -133,7 +133,7 @@ class RaceReplayViewModel(
         while (currentTime <= endTime) {
             emit(currentTime)
             val localTime = currentTime.toLocalDateTime(TimeZone.currentSystemDefault())
-            val formatted = "%02d:%02d".format(localTime.hour, localTime.minute)
+            val formatted = "${localTime.hour.toString().padStart(2, '0')}:${localTime.minute.toString().padStart(2, '0')}"
             updateState { copy(currentRaceTime = formatted) }
             delay(REPLAY_TICK_DELAY_MS)
             currentTime += REPLAY_TIME_ADVANCE_MINUTES.minutes
