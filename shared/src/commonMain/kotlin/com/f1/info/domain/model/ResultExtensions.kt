@@ -1,4 +1,4 @@
-package com.f1.info.core.domain.model
+package com.f1.info.domain.model
 
 inline fun <T, E, R> Result<T, E>.fold(
     onSuccess: (T) -> R,

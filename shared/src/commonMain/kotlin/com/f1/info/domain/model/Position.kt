@@ -1,6 +1,6 @@
-package com.f1.info.core.domain.model
+package com.f1.info.domain.model
 
-import java.time.Instant
+import kotlinx.datetime.Instant
 
 data class Position(
     val driverNumber: Int,

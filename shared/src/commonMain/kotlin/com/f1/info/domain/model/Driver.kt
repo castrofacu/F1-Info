@@ -1,4 +1,4 @@
-package com.f1.info.core.domain.model
+package com.f1.info.domain.model
 
 data class Driver(
     val number: Int,
