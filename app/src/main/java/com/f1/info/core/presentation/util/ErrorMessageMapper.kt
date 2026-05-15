@@ -1,6 +1,6 @@
 package com.f1.info.core.presentation.util
 
-import com.f1.info.core.domain.model.DomainError
+import com.f1.info.domain.model.DomainError
 
 object ErrorMessageMapper {
     fun map(error: DomainError): String {

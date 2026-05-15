@@ -2,17 +2,17 @@ package com.f1.info.features.racereplay.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.f1.info.core.common.AppConstants
-import com.f1.info.core.domain.model.DomainError
-import com.f1.info.core.domain.model.fold
-import com.f1.info.core.domain.usecase.GetDriversUseCase
-import com.f1.info.core.domain.usecase.GetPositionsUseCase
 import com.f1.info.core.presentation.mvi.BaseViewModel
 import com.f1.info.core.presentation.util.ErrorMessageMapper
-import com.f1.info.features.racereplay.presentation.model.DriverPosition
+import com.f1.info.domain.model.DomainError
+import com.f1.info.domain.model.fold
+import com.f1.info.domain.usecase.BuildRaceTimelineUseCase
+import com.f1.info.domain.usecase.GetDriversUseCase
+import com.f1.info.domain.usecase.GetPositionsUseCase
+import com.f1.info.domain.model.DriverPosition
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayState
-import com.f1.info.features.racereplay.presentation.processor.RaceTimelineProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -25,22 +25,21 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.TreeMap
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration.Companion.minutes
 
 class RaceReplayViewModel(
     private val getPositionsUseCase: GetPositionsUseCase,
     private val getDriversUseCase: GetDriversUseCase,
-    private val timelineProcessor: RaceTimelineProcessor
+    private val buildRaceTimeline: BuildRaceTimelineUseCase
 ) : BaseViewModel<RaceReplayState, RaceReplayIntent, RaceReplayEffect>(RaceReplayState()) {
 
     private var replayJob: Job? = null
     private val isPlaying = MutableStateFlow(false)
 
-    private var timelineSnapshots: TreeMap<Instant, List<DriverPosition>> = TreeMap()
+    private var timeline: List<Pair<Instant, List<DriverPosition>>> = emptyList()
 
     companion object {
         private const val REPLAY_TICK_DELAY_MS = 500L
@@ -69,8 +68,7 @@ class RaceReplayViewModel(
                 onSuccess = { allPositions ->
                     driversResult.fold(
                         onSuccess = { drivers ->
-                            timelineSnapshots =
-                                timelineProcessor.buildTimeline(allPositions, drivers)
+                            timeline = buildRaceTimeline(allPositions, drivers)
                             startReplay()
                         },
                         onFailure = { handleError(it) }
@@ -96,7 +94,7 @@ class RaceReplayViewModel(
     private fun startReplay() {
         replayJob?.cancel()
         replayJob = viewModelScope.launch {
-            val startTime = timelineSnapshots.firstKey() ?: return@launch
+            val startTime = timeline.minOfOrNull { it.first } ?: return@launch
 
             val initialSnapshot = getSnapshotAtTime(startTime)
             updateState { copy(isLoading = false, drivers = initialSnapshot) }
@@ -113,19 +111,32 @@ class RaceReplayViewModel(
     }
 
     private fun getSnapshotAtTime(currentTime: Instant): List<DriverPosition> {
-        return timelineSnapshots.floorEntry(currentTime)?.value ?: emptyList()
+        var lo = 0
+        var hi = timeline.size - 1
+        var result = -1
+        while (lo <= hi) {
+            val mid = (lo + hi) / 2
+            if (timeline[mid].first <= currentTime) {
+                result = mid
+                lo = mid + 1
+            } else {
+                hi = mid - 1
+            }
+        }
+        return if (result >= 0) timeline[result].second else emptyList()
     }
 
     private fun createRaceTimeFlow(startTime: Instant): Flow<Instant> = flow {
         var currentTime = startTime
-        val endTime = timelineSnapshots.keys.maxOrNull() ?: return@flow
-        val hourFormatter = DateTimeFormatter.ofPattern("HH:mm")
-            .withZone(ZoneId.systemDefault())
+        val endTime = timeline.maxOfOrNull { it.first } ?: return@flow
+
         while (currentTime <= endTime) {
             emit(currentTime)
-            updateState { copy(currentRaceTime = hourFormatter.format(currentTime)) }
+            val localTime = currentTime.toLocalDateTime(TimeZone.currentSystemDefault())
+            val formatted = "%02d:%02d".format(localTime.hour, localTime.minute)
+            updateState { copy(currentRaceTime = formatted) }
             delay(REPLAY_TICK_DELAY_MS)
-            currentTime = currentTime.plus(REPLAY_TIME_ADVANCE_MINUTES, ChronoUnit.MINUTES)
+            currentTime += REPLAY_TIME_ADVANCE_MINUTES.minutes
         }
     }
 }

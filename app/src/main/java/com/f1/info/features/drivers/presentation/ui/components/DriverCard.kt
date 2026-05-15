@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
-import com.f1.info.core.domain.model.Driver
+import com.f1.info.domain.model.Driver
 import com.f1.info.core.presentation.ui.theme.F1InfoTheme
 
 @Composable

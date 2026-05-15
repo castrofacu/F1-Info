@@ -14,7 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.f1.info.core.domain.model.Driver
+import com.f1.info.domain.model.Driver
 import com.f1.info.core.presentation.ui.components.ErrorComponent
 import com.f1.info.core.presentation.ui.components.LoadingComponent
 import com.f1.info.core.presentation.ui.theme.F1InfoTheme
