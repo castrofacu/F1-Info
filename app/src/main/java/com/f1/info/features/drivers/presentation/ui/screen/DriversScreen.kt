@@ -18,11 +18,11 @@ import com.f1.info.domain.model.Driver
 import com.f1.info.core.presentation.ui.components.ErrorComponent
 import com.f1.info.core.presentation.ui.components.LoadingComponent
 import com.f1.info.core.presentation.ui.theme.F1InfoTheme
-import com.f1.info.features.drivers.presentation.mvi.DriversEffect
-import com.f1.info.features.drivers.presentation.mvi.DriversIntent
-import com.f1.info.features.drivers.presentation.mvi.DriversState
+import com.f1.info.presentation.drivers.mvi.DriversEffect
+import com.f1.info.presentation.drivers.mvi.DriversIntent
+import com.f1.info.presentation.drivers.mvi.DriversState
 import com.f1.info.features.drivers.presentation.ui.components.DriverCard
-import com.f1.info.features.drivers.presentation.viewmodel.DriversViewModel
+import com.f1.info.presentation.drivers.DriversViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -68,7 +68,7 @@ private fun DriversScreenContent(
         when {
             state.isLoading -> LoadingComponent(modifier = Modifier.padding(innerPadding))
             state.error != null -> ErrorComponent(
-                message = state.error,
+                message = state.error!!,
                 modifier = Modifier.padding(innerPadding),
                 onRetry = onRetry
             )

@@ -1,4 +1,4 @@
-package com.f1.info.features.drivers.presentation.mvi
+package com.f1.info.presentation.drivers.mvi
 
 import com.f1.info.domain.model.Driver
 

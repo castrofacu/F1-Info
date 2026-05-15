@@ -1,14 +1,14 @@
-package com.f1.info.features.drivers.presentation.viewmodel
+package com.f1.info.presentation.drivers
 
 import androidx.lifecycle.viewModelScope
-import com.f1.info.core.common.AppConstants
 import com.f1.info.domain.model.fold
 import com.f1.info.domain.usecase.GetDriversUseCase
-import com.f1.info.core.presentation.mvi.BaseViewModel
-import com.f1.info.core.presentation.util.ErrorMessageMapper
-import com.f1.info.features.drivers.presentation.mvi.DriversEffect
-import com.f1.info.features.drivers.presentation.mvi.DriversIntent
-import com.f1.info.features.drivers.presentation.mvi.DriversState
+import com.f1.info.presentation.common.AppConstants
+import com.f1.info.presentation.drivers.mvi.DriversEffect
+import com.f1.info.presentation.drivers.mvi.DriversIntent
+import com.f1.info.presentation.drivers.mvi.DriversState
+import com.f1.info.presentation.mvi.BaseViewModel
+import com.f1.info.presentation.util.ErrorMessageMapper
 import kotlinx.coroutines.launch
 
 class DriversViewModel(

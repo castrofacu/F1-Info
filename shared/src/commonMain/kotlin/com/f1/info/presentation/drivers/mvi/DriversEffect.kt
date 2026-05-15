@@ -1,4 +1,4 @@
-package com.f1.info.features.drivers.presentation.mvi
+package com.f1.info.presentation.drivers.mvi
 
 sealed interface DriversEffect {
     data class NavigateToDriverDetail(val driverNumber: Int) : DriversEffect
