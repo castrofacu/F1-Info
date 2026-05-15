@@ -55,8 +55,6 @@ class RaceTimelineProcessor : BuildRaceTimelineUseCase {
         timestamps: List<Instant>,
         cursors: List<DriverCursor>
     ): Map<Instant, List<DriverPosition>> {
-        // toSortedMap() no está disponible en commonMain (solo JVM).
-        // Usamos sortedBy sobre la lista de entries y reconstruimos el mapa — mismo resultado.
         return timestamps.sorted().associateWith { timestamp ->
             cursors.map { cursor ->
                 val currentPos = cursor.advanceTo(timestamp)
