@@ -39,7 +39,7 @@ class RaceReplayViewModel(
     private var replayJob: Job? = null
     private val isPlaying = MutableStateFlow(false)
 
-    private var timelineSnapshots: Map<Instant, List<DriverPosition>> = emptyMap()
+    private var timeline: List<Pair<Instant, List<DriverPosition>>> = emptyList()
 
     companion object {
         private const val REPLAY_TICK_DELAY_MS = 500L
@@ -68,7 +68,7 @@ class RaceReplayViewModel(
                 onSuccess = { allPositions ->
                     driversResult.fold(
                         onSuccess = { drivers ->
-                            timelineSnapshots = buildRaceTimeline(allPositions, drivers)
+                            timeline = buildRaceTimeline(allPositions, drivers)
                             startReplay()
                         },
                         onFailure = { handleError(it) }
@@ -94,7 +94,7 @@ class RaceReplayViewModel(
     private fun startReplay() {
         replayJob?.cancel()
         replayJob = viewModelScope.launch {
-            val startTime = timelineSnapshots.keys.firstOrNull() ?: return@launch
+            val startTime = timeline.minOfOrNull { it.first } ?: return@launch
 
             val initialSnapshot = getSnapshotAtTime(startTime)
             updateState { copy(isLoading = false, drivers = initialSnapshot) }
@@ -111,14 +111,24 @@ class RaceReplayViewModel(
     }
 
     private fun getSnapshotAtTime(currentTime: Instant): List<DriverPosition> {
-        return timelineSnapshots.entries
-            .lastOrNull { it.key <= currentTime }
-            ?.value ?: emptyList()
+        var lo = 0
+        var hi = timeline.size - 1
+        var result = -1
+        while (lo <= hi) {
+            val mid = (lo + hi) / 2
+            if (timeline[mid].first <= currentTime) {
+                result = mid
+                lo = mid + 1
+            } else {
+                hi = mid - 1
+            }
+        }
+        return if (result >= 0) timeline[result].second else emptyList()
     }
 
     private fun createRaceTimeFlow(startTime: Instant): Flow<Instant> = flow {
         var currentTime = startTime
-        val endTime = timelineSnapshots.keys.maxOrNull() ?: return@flow
+        val endTime = timeline.maxOfOrNull { it.first } ?: return@flow
 
         while (currentTime <= endTime) {
             emit(currentTime)

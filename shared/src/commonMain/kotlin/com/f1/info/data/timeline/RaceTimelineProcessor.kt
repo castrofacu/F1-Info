@@ -12,10 +12,8 @@ class RaceTimelineProcessor : BuildRaceTimelineUseCase {
     override operator fun invoke(
         positions: List<Position>,
         drivers: List<Driver>
-    ): Map<Instant, List<DriverPosition>> {
-        if (positions.isEmpty() || drivers.isEmpty()) {
-            return emptyMap()
-        }
+    ): List<Pair<Instant, List<DriverPosition>>> {
+        if (positions.isEmpty() || drivers.isEmpty()) return emptyList()
 
         val cursors = createDriverCursors(positions, drivers)
         val uniqueTimestamps = extractTimestampsSequentially(positions)
@@ -54,12 +52,13 @@ class RaceTimelineProcessor : BuildRaceTimelineUseCase {
     private fun generateSnapshots(
         timestamps: List<Instant>,
         cursors: List<DriverCursor>
-    ): Map<Instant, List<DriverPosition>> {
-        return timestamps.sorted().associateWith { timestamp ->
-            cursors.map { cursor ->
+    ): List<Pair<Instant, List<DriverPosition>>> {
+        return timestamps.sorted().map { timestamp ->
+            val snapshot = cursors.map { cursor ->
                 val currentPos = cursor.advanceTo(timestamp)
                 createDriverPosition(cursor.driver, currentPos?.position)
             }.sortedWith(compareBy(nullsLast()) { it.position })
+            timestamp to snapshot
         }
     }
 

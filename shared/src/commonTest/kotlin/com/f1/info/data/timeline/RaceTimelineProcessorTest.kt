@@ -10,8 +10,15 @@ class RaceTimelineProcessorTest {
 
     private val processor = RaceTimelineProcessor()
 
+    private fun List<Pair<kotlinx.datetime.Instant, *>>.snapshotAt(instant: kotlinx.datetime.Instant) =
+        first { it.first == instant }.second
+
+    @Suppress("UNCHECKED_CAST")
+    private fun List<Pair<kotlinx.datetime.Instant, *>>.driversAt(instant: kotlinx.datetime.Instant) =
+        snapshotAt(instant) as List<com.f1.info.domain.model.DriverPosition>
+
     @Test
-    fun `given empty positions, when building timeline, then returns empty map`() {
+    fun `given empty positions, when building timeline, then returns empty list`() {
         // Given
         val positions = emptyList<com.f1.info.domain.model.Position>()
         val drivers = listOf(DriverFixtures.hamilton())
@@ -24,7 +31,7 @@ class RaceTimelineProcessorTest {
     }
 
     @Test
-    fun `given empty drivers, when building timeline, then returns empty map`() {
+    fun `given empty drivers, when building timeline, then returns empty list`() {
         // Given
         val positions = listOf(PositionFixtures.hamiltonP1AtT1())
         val drivers = emptyList<com.f1.info.domain.model.Driver>()
@@ -50,8 +57,8 @@ class RaceTimelineProcessorTest {
 
         // Then
         assertEquals(2, result.size)
-        assertTrue(result.containsKey(PositionFixtures.T1))
-        assertTrue(result.containsKey(PositionFixtures.T2))
+        assertTrue(result.any { it.first == PositionFixtures.T1 })
+        assertTrue(result.any { it.first == PositionFixtures.T2 })
     }
 
     @Test
@@ -67,8 +74,7 @@ class RaceTimelineProcessorTest {
         val result = processor(positions, drivers)
 
         // Then
-        val keys = result.keys.toList()
-        assertEquals(listOf(PositionFixtures.T1, PositionFixtures.T2), keys)
+        assertEquals(listOf(PositionFixtures.T1, PositionFixtures.T2), result.map { it.first })
     }
 
     @Test
@@ -83,7 +89,7 @@ class RaceTimelineProcessorTest {
 
         // When
         val result = processor(positions, drivers)
-        val snapshotAtT2 = result[PositionFixtures.T2]!!
+        val snapshotAtT2 = result.driversAt(PositionFixtures.T2)
 
         // Then
         val verstappen = snapshotAtT2.find { it.number == 1 }!!
@@ -93,13 +99,12 @@ class RaceTimelineProcessorTest {
     @Test
     fun `given a driver with no positions at all, when building timeline, then that driver is excluded from snapshots`() {
         // Given — solo hay posiciones para Hamilton; Verstappen no tiene ninguna
-        // El processor solo incluye en el snapshot a drivers que tienen al menos una posición
         val positions = listOf(PositionFixtures.hamiltonP1AtT1())
         val drivers = listOf(DriverFixtures.hamilton(), DriverFixtures.verstappen())
 
         // When
         val result = processor(positions, drivers)
-        val snapshot = result[PositionFixtures.T1]!!
+        val snapshot = result.driversAt(PositionFixtures.T1)
 
         // Then
         assertEquals(1, snapshot.size)
@@ -117,7 +122,7 @@ class RaceTimelineProcessorTest {
 
         // When
         val result = processor(positions, drivers)
-        val snapshot = result[PositionFixtures.T1]!!
+        val snapshot = result.driversAt(PositionFixtures.T1)
 
         // Then — P1 primero, P2 segundo
         assertEquals(1, snapshot[0].position)
