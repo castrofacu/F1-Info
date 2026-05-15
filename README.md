@@ -8,7 +8,7 @@ F1 Info is an Android application project designed to showcase modern mobile dev
 - **Real-time Data**: Fetch live race data from the OpenF1 API
 - **Modern UI**: Clean, adaptive Material 3 design with support for different screen sizes
 - **MVI Architecture**: Unidirectional data flow with clear state management
-- **Kotlin Multiplatform**: Shared domain and data layers targeting Android and iOS
+- **Kotlin Multiplatform**: Shared data, domain, and **presentation layers** (ViewModels + MVI) targeting Android and iOS
 
 > **Note:** This project is a work in progress. More features are coming soon!
 
@@ -29,10 +29,20 @@ The project follows **Clean Architecture** principles with **MVI (Model-View-Int
 ```
 F1 Info
 ├── app/                        # Android application module
-│   ├── di/                     # Android-only DI (ViewModels)
-│   └── features/
+│   ├── di/                     # Android-only DI (ViewModel registration via Koin)
+│   ├── F1InfoApplication.kt    # Application entry point (Koin init)
+│   ├── MainActivity.kt
+│   └── presentation/
+│       ├── core/
+│       │   ├── components/     # Shared Compose components (ErrorComponent, LoadingComponent)
+│       │   ├── navigation/     # AppDestination, NavigationState
+│       │   └── theme/          # Material 3 theme (Color, Type, Shape, Spacing, Elevation)
+│       ├── drivers/
+│       │   ├── navigation/     # DriversNavGraph
+│       │   └── ui/             # DriversScreen, DriverCard
 │       └── racereplay/
-│           └── presentation/   # ViewModel, MVI state, Compose UI
+│           ├── navigation/     # RaceReplayNavGraph
+│           └── ui/             # RaceReplayScreen, DriverPositionCard
 │
 └── shared/                     # KMP shared module (Android + iOS)
     └── commonMain/
@@ -46,18 +56,25 @@ F1 Info
         │   ├── model/          # Domain models (Driver, Position, DomainError, Result)
         │   ├── repository/     # Repository interfaces
         │   └── usecase/        # Use case interfaces and implementations
-        ├── di/                 # Koin shared module (network, repositories, use cases)
-        └── features/
-            └── racereplay/
-                └── model/      # DriverPosition (feature-scoped model)
+        ├── presentation/
+        │   ├── mvi/            # BaseViewModel<State, Intent, Effect>
+        │   ├── common/         # AppConstants (session keys, etc.)
+        │   ├── util/           # ErrorMessageMapper
+        │   ├── drivers/
+        │   │   ├── mvi/        # DriversState, DriversIntent, DriversEffect
+        │   │   └── DriversViewModel.kt
+        │   └── racereplay/
+        │       ├── mvi/        # RaceReplayState, RaceReplayIntent, RaceReplayEffect
+        │       └── RaceReplayViewModel.kt
+        └── di/                 # Koin shared module (network, repositories, use cases)
 ```
 
 ### Layer Responsibilities
 
 - **Domain Layer** (`shared/domain/`): Pure Kotlin models, repository interfaces, and use case contracts. No framework dependencies. Shared across all platforms.
 - **Data Layer** (`shared/data/`): Ktor-based networking, DTOs, mappers, and repository implementations. Isolated behind domain interfaces.
-- **Presentation Layer** (`app/.../presentation/`): Android-only ViewModels and MVI state. Consumes domain use cases — no direct dependency on data layer.
-- **UI Layer** (`app/.../ui/`): Jetpack Compose screens and components. Observes ViewModel state.
+- **Presentation Layer** (`shared/presentation/`): Platform-agnostic ViewModels and MVI state/intent/effect classes. Uses `androidx.lifecycle.ViewModel` KMP support. Shared across all platforms.
+- **UI Layer** (`app/presentation/`): Jetpack Compose screens, components, navigation, and theme. Organized by feature under a single flat `presentation/` package — no `features/` nesting. Android-only.
 
 ### Key Design Decisions
 
@@ -78,6 +95,7 @@ F1 Info
 - **kotlinx.serialization**: Multiplatform JSON serialization (replaces Gson)
 - **kotlinx.datetime**: Multiplatform date/time (replaces `java.time`)
 - **kotlinx-coroutines-test**: Coroutine testing utilities
+- **androidx.lifecycle.viewmodel 2.10.0**: KMP ViewModel support — `BaseViewModel` lives in `shared/commonMain`
 
 ### Android
 - **Kotlin 2.3.0**
@@ -112,7 +130,7 @@ F1 Info
 | Repository implementations | Migrated to `shared/commonMain` |
 | Use cases | Migrated to `shared/commonMain` |
 | DI (Koin shared module) | Migrated to `shared/commonMain` |
-| Android ViewModel | Remains in `:app` (platform-specific) |
+| Android ViewModel + MVI | Migrated to `shared/commonMain/presentation/` |
 | Compose UI | Remains in `:app` (platform-specific) |
 | iOS SwiftUI UI | Pending |
 
