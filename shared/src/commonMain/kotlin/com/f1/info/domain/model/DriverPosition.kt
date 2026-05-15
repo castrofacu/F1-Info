@@ -1,4 +1,4 @@
-package com.f1.info.features.racereplay.presentation.model
+package com.f1.info.domain.model
 
 data class DriverPosition(
     val number: Int,

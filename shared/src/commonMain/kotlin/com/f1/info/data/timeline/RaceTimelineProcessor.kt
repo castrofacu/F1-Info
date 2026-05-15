@@ -1,9 +1,9 @@
 package com.f1.info.data.timeline
 
 import com.f1.info.domain.model.Driver
+import com.f1.info.domain.model.DriverPosition
 import com.f1.info.domain.model.Position
 import com.f1.info.domain.usecase.BuildRaceTimelineUseCase
-import com.f1.info.features.racereplay.model.DriverPosition
 import kotlinx.datetime.Instant
 
 // THIS ASSUMES TIMESTAMPS ARE IN ORDER
@@ -55,12 +55,14 @@ class RaceTimelineProcessor : BuildRaceTimelineUseCase {
         timestamps: List<Instant>,
         cursors: List<DriverCursor>
     ): Map<Instant, List<DriverPosition>> {
-        return timestamps.associateWith { timestamp ->
+        // toSortedMap() no está disponible en commonMain (solo JVM).
+        // Usamos sortedBy sobre la lista de entries y reconstruimos el mapa — mismo resultado.
+        return timestamps.sorted().associateWith { timestamp ->
             cursors.map { cursor ->
                 val currentPos = cursor.advanceTo(timestamp)
                 createDriverPosition(cursor.driver, currentPos?.position)
             }.sortedWith(compareBy(nullsLast()) { it.position })
-        }.toSortedMap()
+        }
     }
 
     private fun createDriverPosition(driver: Driver, position: Int?): DriverPosition {

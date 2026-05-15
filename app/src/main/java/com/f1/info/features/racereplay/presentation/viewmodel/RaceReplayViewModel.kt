@@ -9,7 +9,7 @@ import com.f1.info.domain.model.fold
 import com.f1.info.domain.usecase.BuildRaceTimelineUseCase
 import com.f1.info.domain.usecase.GetDriversUseCase
 import com.f1.info.domain.usecase.GetPositionsUseCase
-import com.f1.info.features.racereplay.presentation.model.DriverPosition
+import com.f1.info.domain.model.DriverPosition
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayEffect
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayIntent
 import com.f1.info.features.racereplay.presentation.mvi.RaceReplayState

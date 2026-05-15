@@ -24,7 +24,7 @@ import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.f1.info.core.presentation.ui.theme.F1InfoTheme
-import com.f1.info.features.racereplay.presentation.model.DriverPosition
+import com.f1.info.domain.model.DriverPosition
 
 @Composable
 fun DriverPositionCard(driver: DriverPosition) {
