@@ -16,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.f1.info.core.navigation.AppDestination
-import com.f1.info.core.navigation.rememberNavigationState
-import com.f1.info.core.presentation.ui.theme.F1InfoTheme
-import com.f1.info.features.drivers.presentation.navigation.driversNavGraph
-import com.f1.info.features.racereplay.presentation.navigation.raceReplayNavGraph
+import com.f1.info.presentation.core.navigation.AppDestination
+import com.f1.info.presentation.core.navigation.rememberNavigationState
+import com.f1.info.presentation.core.theme.F1InfoTheme
+import com.f1.info.presentation.drivers.navigation.driversNavGraph
+import com.f1.info.presentation.racereplay.navigation.raceReplayNavGraph
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
