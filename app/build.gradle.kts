@@ -7,9 +7,7 @@ plugins {
 
 android {
     namespace = "com.f1.info"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.f1.info"
@@ -61,6 +59,7 @@ dependencies {
     implementation(libs.androidx.compose.icons.extended)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.coil.compose)
