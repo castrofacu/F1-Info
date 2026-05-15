@@ -1,4 +1,4 @@
-package com.f1.info.core.presentation.util
+package com.f1.info.presentation.util
 
 import com.f1.info.domain.model.DomainError
 
