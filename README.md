@@ -57,9 +57,7 @@ F1 Info
         │   ├── repository/     # Repository interfaces
         │   └── usecase/        # Use case interfaces and implementations
         ├── presentation/
-        │   ├── mvi/            # BaseViewModel<State, Intent, Effect>
-        │   ├── common/         # AppConstants (session keys, etc.)
-        │   ├── util/           # ErrorMessageMapper
+        │   ├── common/         # AppConstants, BaseViewModel<State, Intent, Effect>, ErrorMessageMapper
         │   ├── drivers/
         │   │   ├── mvi/        # DriversState, DriversIntent, DriversEffect
         │   │   └── DriversViewModel.kt

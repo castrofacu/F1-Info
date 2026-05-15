@@ -8,11 +8,11 @@ import com.f1.info.domain.usecase.BuildRaceTimelineUseCase
 import com.f1.info.domain.usecase.GetDriversUseCase
 import com.f1.info.domain.usecase.GetPositionsUseCase
 import com.f1.info.presentation.common.AppConstants
-import com.f1.info.presentation.mvi.BaseViewModel
+import com.f1.info.presentation.common.BaseViewModel
 import com.f1.info.presentation.racereplay.mvi.RaceReplayEffect
 import com.f1.info.presentation.racereplay.mvi.RaceReplayIntent
 import com.f1.info.presentation.racereplay.mvi.RaceReplayState
-import com.f1.info.presentation.util.ErrorMessageMapper
+import com.f1.info.presentation.common.ErrorMessageMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async

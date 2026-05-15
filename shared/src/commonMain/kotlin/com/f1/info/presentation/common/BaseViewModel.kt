@@ -1,4 +1,4 @@
-package com.f1.info.presentation.mvi
+package com.f1.info.presentation.common
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +14,7 @@ abstract class BaseViewModel<State, Intent, Effect>(
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
 
-    private val _effect = Channel<Effect>(Channel.BUFFERED)
+    private val _effect = Channel<Effect>(Channel.Factory.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
     protected fun updateState(reducer: State.() -> State) {

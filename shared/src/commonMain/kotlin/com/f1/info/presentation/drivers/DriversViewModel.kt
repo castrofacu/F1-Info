@@ -7,8 +7,8 @@ import com.f1.info.presentation.common.AppConstants
 import com.f1.info.presentation.drivers.mvi.DriversEffect
 import com.f1.info.presentation.drivers.mvi.DriversIntent
 import com.f1.info.presentation.drivers.mvi.DriversState
-import com.f1.info.presentation.mvi.BaseViewModel
-import com.f1.info.presentation.util.ErrorMessageMapper
+import com.f1.info.presentation.common.BaseViewModel
+import com.f1.info.presentation.common.ErrorMessageMapper
 import kotlinx.coroutines.launch
 
 class DriversViewModel(
