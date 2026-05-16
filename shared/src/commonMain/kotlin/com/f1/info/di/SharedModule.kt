@@ -15,6 +15,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 val sharedModule = module {
@@ -41,4 +42,10 @@ val sharedModule = module {
     single { GetDriversUseCase(get()) }
     single { GetPositionsUseCase(get()) }
     single<BuildRaceTimelineUseCase> { RaceTimelineProcessor() }
+}
+
+fun initKoin() {
+    startKoin {
+        modules(sharedModule)
+    }
 }
