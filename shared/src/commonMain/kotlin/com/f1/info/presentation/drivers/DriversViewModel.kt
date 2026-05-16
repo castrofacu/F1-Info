@@ -9,11 +9,16 @@ import com.f1.info.presentation.drivers.mvi.DriversIntent
 import com.f1.info.presentation.drivers.mvi.DriversState
 import com.f1.info.presentation.common.BaseViewModel
 import com.f1.info.presentation.common.ErrorMessageMapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class DriversViewModel(
     private val getDriversUseCase: GetDriversUseCase
 ) : BaseViewModel<DriversState, DriversIntent, DriversEffect>(DriversState()) {
+
+    val typedState: StateFlow<DriversState> get() = state
+    val typedEffect: Flow<DriversEffect> get() = effect
 
     init {
         handleIntent(DriversIntent.LoadDrivers)

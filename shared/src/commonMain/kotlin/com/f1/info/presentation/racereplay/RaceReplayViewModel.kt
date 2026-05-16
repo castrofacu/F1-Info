@@ -19,6 +19,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
@@ -35,6 +36,9 @@ class RaceReplayViewModel(
     private val getDriversUseCase: GetDriversUseCase,
     private val buildRaceTimeline: BuildRaceTimelineUseCase
 ) : BaseViewModel<RaceReplayState, RaceReplayIntent, RaceReplayEffect>(RaceReplayState()) {
+
+    val typedState: StateFlow<RaceReplayState> get() = state
+    val typedEffect: Flow<RaceReplayEffect> get() = effect
 
     private var replayJob: Job? = null
     private val isPlaying = MutableStateFlow(false)
