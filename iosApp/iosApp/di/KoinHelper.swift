@@ -4,6 +4,6 @@ import shared
 enum KoinHelper {
 
     static func start() {
-        doInitKoin()
+        IosModuleKt.initKoinIos()
     }
 }
