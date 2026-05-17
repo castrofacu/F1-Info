@@ -1,33 +1,26 @@
 import SwiftUI
-import SharedLogic
 
 struct ContentView: View {
-    @State private var showContent = false
     var body: some View {
-        VStack {
-            Button("Click me!") {
-                withAnimation {
-                    showContent = !showContent
-                }
+        TabView {
+            NavigationStack {
+                DriversView()
+            }
+            .tabItem {
+                Label("Pilotos", systemImage: "person.2.fill")
             }
 
-            if showContent {
-                VStack(spacing: 16) {
-                    Image(systemName: "swift")
-                        .font(.system(size: 200))
-                        .foregroundColor(.accentColor)
-                    Text("SwiftUI: \(Greeting().greet())")
-                }
-                .transition(.move(edge: .top).combined(with: .opacity))
+            NavigationStack {
+                RaceReplayView()
+            }
+            .tabItem {
+                Label("Carrera", systemImage: "flag.checkered")
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding()
+        .tint(.f1Red)
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+#Preview {
+    ContentView()
 }
