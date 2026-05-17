@@ -24,7 +24,6 @@ final class RaceReplayObservableViewModel: ObservableObject {
     deinit {
         stateObservationTask?.cancel()
         effectObservationTask?.cancel()
-        viewModel.clear()
     }
 
     private func startObservingState() {
