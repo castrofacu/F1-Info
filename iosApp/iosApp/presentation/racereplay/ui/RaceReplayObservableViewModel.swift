@@ -8,10 +8,10 @@ final class RaceReplayObservableViewModel: ObservableObject {
 
     @Published private(set) var state: RaceReplayState
 
+    @Published private(set) var alertMessage: String? = nil
+
     private var stateObservationTask: Task<Void, Never>?
     private var effectObservationTask: Task<Void, Never>?
-
-    var onShowError: ((String) -> Void)?
 
     init() {
         self.viewModel = ViewModelHelper().raceReplayViewModel()
@@ -41,7 +41,7 @@ final class RaceReplayObservableViewModel: ObservableObject {
                 guard let effect else { continue }
                 switch onEnum(of: effect) {
                 case .showError(let e):
-                    onShowError?(e.message)
+                    alertMessage = e.message
                 }
             }
         }
@@ -51,6 +51,10 @@ final class RaceReplayObservableViewModel: ObservableObject {
         viewModel.handleIntent(intent: intent)
     }
 
+    func dismissAlert() {
+        alertMessage = nil
+    }
+    
     func stopPlaybackIfNeeded() {
         if state.isPlaying {
             viewModel.handleIntent(intent: RaceReplayIntentPlayStop())
