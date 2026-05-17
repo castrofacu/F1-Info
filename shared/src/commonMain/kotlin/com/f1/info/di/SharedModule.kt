@@ -41,5 +41,4 @@ val sharedModule = module {
     single { GetDriversUseCase(get()) }
     single { GetPositionsUseCase(get()) }
     single<BuildRaceTimelineUseCase> { RaceTimelineProcessor() }
-
 }
