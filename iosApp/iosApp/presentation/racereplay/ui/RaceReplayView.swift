@@ -5,9 +5,6 @@ struct RaceReplayView: View {
 
     @StateObject private var vm = RaceReplayObservableViewModel()
 
-    @State private var errorMessage: String?
-    @State private var showError = false
-
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
 
@@ -56,19 +53,17 @@ struct RaceReplayView: View {
         }
         .onAppear {
             vm.handleIntent(RaceReplayIntentLoadRaceData())
-
-            vm.onShowError = { message in
-                errorMessage = message
-                showError = true
-            }
         }
         .onDisappear {
             vm.stopPlaybackIfNeeded()
         }
-        .alert("Error", isPresented: $showError, presenting: errorMessage) { _ in
+        .alert("Error", isPresented: Binding(
+            get: { vm.alertMessage != nil },
+            set: { if !$0 { vm.dismissAlert() } }
+        )) {
             Button("OK", role: .cancel) {}
-        } message: { message in
-            Text(message)
+        } message: {
+            Text(vm.alertMessage ?? "")
         }
     }
 }

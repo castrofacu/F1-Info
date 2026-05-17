@@ -5,9 +5,6 @@ struct DriversView: View {
 
     @StateObject private var vm = DriversObservableViewModel()
 
-    @State private var errorMessage: String?
-    @State private var showError = false
-
     var body: some View {
         Group {
             if vm.state.isLoading {
@@ -26,16 +23,13 @@ struct DriversView: View {
             }
         }
         .navigationTitle("Pilotos")
-        .onAppear {
-            vm.onShowError = { message in
-                errorMessage = message
-                showError = true
-            }
-        }
-        .alert("Error", isPresented: $showError, presenting: errorMessage) { _ in
+        .alert("Error", isPresented: Binding(
+            get: { vm.alertMessage != nil },
+            set: { if !$0 { vm.dismissAlert() } }
+        )) {
             Button("OK", role: .cancel) {}
-        } message: { message in
-            Text(message)
+        } message: {
+            Text(vm.alertMessage ?? "")
         }
     }
 }
