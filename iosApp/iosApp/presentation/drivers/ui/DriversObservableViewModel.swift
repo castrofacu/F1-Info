@@ -25,7 +25,7 @@ final class DriversObservableViewModel: ObservableObject {
     deinit {
         stateObservationTask?.cancel()
         effectObservationTask?.cancel()
-        viewModel.onCleared()
+        viewModel.clear()
     }
 
     private func startObservingState() {

@@ -26,4 +26,6 @@ abstract class BaseViewModel<State, Intent, Effect>(
     }
 
     abstract fun handleIntent(intent: Intent)
+
+    fun clear() = onCleared()
 }
