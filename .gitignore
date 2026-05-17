@@ -33,3 +33,33 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# iOS / Xcode
+xcuserdata/
+*.xcuserstate
+
+DerivedData/
+
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.moved-aside
+
+*.ipa
+*.xcarchive
+
+*.dSYM.zip
+*.dSYM
+
+Pods/
+Podfile.lock
+
+.build/
+iosApp/.swiftpm/
+
+*.xcworkspace/xcuserdata/
+
+playground.xcworkspace
+
+.DS_Store
